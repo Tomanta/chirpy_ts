@@ -1,0 +1,25 @@
+{
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.4",
+    "typescript": "^5.8.3"
+  },
+  "name": "chirpy_ts",
+  "description": "Boot.dev http sever example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^5.1.0",
+    "undici-types": "^7.8.0"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "start": "node dist/index.js",
+    "dev": "npx tsc && node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
