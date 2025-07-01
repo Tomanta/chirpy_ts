@@ -6,31 +6,28 @@ export async function handleValidateChirp(req: Request, res: Response) {
         body: string;
     };
 
-    let body = "";
+    const params: parameters = req.body;
 
-    req.on("data", (chunk) => {
-        body += chunk;
-    });
+    const maxChirpLength = 140;
+    if (params.body.length > maxChirpLength) {
+        respondWithError(res, 400, "Chirp is too long");
+        return;
+    }
 
-    let params: parameters;
-    req.on("end", () => {
-        try {
-            params = JSON.parse(body);
-        } catch (error) {
-            respondWithError(res, 400, "Invalid JSON");
-            return;
+    const words = params.body.split(" ");
+
+    const badWords = ["kerfuffle","sharbert","fornax"];
+    const replacementWord = "****";
+
+    for (let i = 0; i < words.length; i++) {
+        if (badWords.includes(words[i].toLowerCase())) {
+            words[i] = replacementWord;
         }
+    }
+    const cleanedWords = words.join(" ");
 
-        const maxChirpLength = 140;
-        if (params.body.length > maxChirpLength) {
-            respondWithError(res, 400, "Chirp is too long");
-            return;
-        }
-
-        respondWithJSON(res, 200, {
-            valid: true,
-        });
+    respondWithJSON(res, 200, {
+            cleanedBody: cleanedWords,
     });
-
 
 }

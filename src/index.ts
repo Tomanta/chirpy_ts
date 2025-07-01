@@ -8,6 +8,7 @@ const app = express();
 const PORT = 8080;
 
 app.use(middlewareLogResponses);
+app.use(express.json());
 app.get("/admin/metrics", handlerMetrics);
 app.post("/admin/reset", handlerReset);
 
