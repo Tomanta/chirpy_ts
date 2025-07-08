@@ -4,7 +4,7 @@ import { respondWithError } from "./json.js";
 import { BadRequestError, UnauthorizedError, ForbiddenError, NotFoundError } from "./errors.js";
 
 export function middlewareMetricsInc(_: Request, __: Response, next: NextFunction) {
-    config.fileServerHits++;
+    config.api.fileServerHits++;
     next();
 }
 
@@ -48,6 +48,6 @@ export function errorMiddleware(
     if (statusCode >= 500) {
         console.log(err.message);
     }
-    
+
     respondWithError(res, statusCode, message);
 }
