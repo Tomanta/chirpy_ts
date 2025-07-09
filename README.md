@@ -1,6 +1,12 @@
 # chirpy_ts
 Boot.dev http sever example
 
+## Start Postgres
+
+```bash
+sudo service postgresql start
+```
+
 ## Requires
 
 ### Express:
