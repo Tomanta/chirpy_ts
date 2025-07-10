@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import { respondWithJSON } from "./json.js";
-import { BadRequestError } from "./errors.js";
-import { createChirp } from "../db/queries/chirps.js";
+import { BadRequestError, NotFoundError } from "./errors.js";
+import { createChirp, getChirps, getChirpByID } from "../db/queries/chirps.js";
 
-export async function handleCreateChirp(req: Request, res: Response) {
+export async function handlerCreateChirp(req: Request, res: Response) {
     type parameters = {
         body: string;
         userId: string;
@@ -20,9 +20,21 @@ export async function handleCreateChirp(req: Request, res: Response) {
         throw new BadRequestError(`Chirp is too long. Max length is ${maxChirpLength}`);
     }
 
-    const words = params.body.split(" ");
-
     const badWords = ["kerfuffle","sharbert","fornax"];
+    const cleanedBody = getCleanedBody(params.body, badWords);
+
+    const chirp = await createChirp({body: cleanedBody, userId: params.userId});
+
+    if (!chirp) {
+        throw new Error("Cound not create chirp");
+    }
+    
+    respondWithJSON(res, 201, chirp)
+}
+
+function getCleanedBody(body: string, badWords: string[]): string {
+    const words = body.split(" ");
+
     const replacementWord = "****";
 
     for (let i = 0; i < words.length; i++) {
@@ -30,19 +42,26 @@ export async function handleCreateChirp(req: Request, res: Response) {
             words[i] = replacementWord;
         }
     }
-    const cleanedWords = words.join(" ");
+    const cleaned = words.join(" ");
+    return cleaned;
+  
+}
 
-    const chirp = await createChirp({body: cleanedWords, userId: params.userId});
+export async function handlerGetChirps(req: Request, res: Response) {
+    const chirps = await getChirps();
 
-    if (!chirp) {
-        throw new Error("Cound not create chirp");
+    respondWithJSON(res, 200, chirps);
+}
+
+export async function handlerGetChirpByID(req: Request, res: Response) {
+    if (!req.params.id) {
+        throw new BadRequestError("Missing ID");
+    }
+
+    const result = await getChirpByID(req.params.id);
+    if (!result) {
+        throw new NotFoundError("Chirp not found");
     }
     
-    respondWithJSON(res, 201, {
-        id: chirp.id,
-        createdAt: chirp.createdAt,
-        updatedAt: chirp.createdAt,
-        body: chirp.body,
-        userId: chirp.userId,
-    })
+    respondWithJSON(res, 200, result);
 }
