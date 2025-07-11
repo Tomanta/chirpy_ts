@@ -42,3 +42,12 @@ Install:
 npm i drizzle-orm postgres
 npm i -D drizzle-kit
 ```
+
+### bcrypt:
+
+Install:
+
+```bash
+npm i bcrypt
+npm i -D @types/bcrypt
+```

@@ -15,6 +15,13 @@
       "when": 1752099253486,
       "tag": "0001_burly_jamie_braddock",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752270817472,
+      "tag": "0002_complex_black_knight",
+      "breakpoints": true
     }
   ]
 }
