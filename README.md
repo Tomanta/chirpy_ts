@@ -51,3 +51,17 @@ Install:
 npm i bcrypt
 npm i -D @types/bcrypt
 ```
+
+### JSONWebToken
+
+```bash
+npm i jsonwebtoken
+npm i -D @types/jsonwebtoken
+```
+
+### vitest
+
+```bash
+npm i -D vitest
+```
+
